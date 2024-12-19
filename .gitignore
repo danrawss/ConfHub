@@ -1,0 +1,19 @@
+# Root-level .gitignore
+
+# Node.js dependencies
+node_modules/
+
+# Logs
+*.log
+
+# Environment variables
+backend/.env
+frontend/.env
+
+# Build outputs
+frontend/build/
+backend/dist/
+
+# IDE files
+.vscode/
+*.swp
