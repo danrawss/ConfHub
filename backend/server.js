@@ -13,9 +13,6 @@ const app = express();
 // Allow CORS for your frontend origin
 app.use(cors({ origin: "http://localhost:3000" }));
 
-// Or, allow all origins (for development only)
-app.use(cors());
-
 // Middleware
 app.use(express.json()); // Parse JSON bodies
 

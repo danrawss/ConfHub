@@ -7,11 +7,9 @@
     color: white;
 }
 
-.navbar-logo a {
-    text-decoration: none;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
+.navbar-links {
+    display: flex;
+    gap: 1rem; /* Adds more space between buttons */
 }
 
 .navbar-links .navbar-button {
@@ -27,4 +25,11 @@
 
 .navbar-links .navbar-button:hover {
     background-color: #777;
+}
+
+.navbar-logo a {
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const CreateConference = ({ organizerEmail }) => {
+const CreateConference = () => {
     const [formData, setFormData] = useState({
         name: "",
         date: "",
@@ -15,15 +15,18 @@ const CreateConference = ({ organizerEmail }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
-            // Send the form data with the organizer's email
+            const token = localStorage.getItem("token"); // Get the token from local storage
+            const organizerEmail = localStorage.getItem("email"); // Assume email is stored in local storage
+
             await axios.post(
                 `${process.env.REACT_APP_API_BASE_URL}/api/conferences`,
-                { ...formData, organizer: organizerEmail }
+                { ...formData, organizer: organizerEmail }, // Include organizer email
+                { headers: { Authorization: `Bearer ${token}` } }
             );
+
             setMessage("Conference created successfully!");
-            setFormData({ name: "", date: "", description: "" }); // Clear the form
+            setFormData({ name: "", date: "", description: "" });
         } catch (error) {
             console.error("Error creating conference:", error);
             setMessage("Failed to create conference.");
@@ -33,6 +36,7 @@ const CreateConference = ({ organizerEmail }) => {
     return (
         <div style={{ padding: "2rem" }}>
             <h2>Create Conference</h2>
+            {message && <p>{message}</p>}
             <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: "1rem" }}>
                     <label>Conference Name:</label>
@@ -82,10 +86,9 @@ const CreateConference = ({ organizerEmail }) => {
                         cursor: "pointer",
                     }}
                 >
-                    Create Conference
+                    Submit
                 </button>
             </form>
-            {message && <p>{message}</p>}
         </div>
     );
 };

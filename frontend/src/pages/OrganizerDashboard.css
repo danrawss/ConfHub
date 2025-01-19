@@ -1,0 +1,151 @@
+/* General container styling */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: #f9f9f9; /* Light background for contrast */
+    min-height: 100vh;
+}
+
+/* Header styling */
+.dashboard-header {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+/* Table container */
+.dashboard-table-container {
+    width: 90%;
+    max-width: 1200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    padding: 1rem;
+}
+
+/* Table styling */
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+    padding: 1rem;
+    text-align: left;
+    font-size: 1rem;
+    color: #555;
+}
+
+.dashboard-table th {
+    background-color: #f5f5f5;
+    color: #222;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 2px solid #ddd;
+}
+
+.dashboard-table td {
+    border-bottom: 1px solid #eee;
+}
+
+.dashboard-table tr:hover {
+    background-color: #f7f7f7;
+    cursor: pointer;
+}
+
+/* Button container for actions */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dashboard-button {
+    padding: 0.5rem 1rem;
+    background-color: #444; /* Dark grey background */
+    color: white; /* White text for contrast */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-button:hover {
+    background-color: #666; /* Slightly lighter grey on hover */
+}
+
+/* Specific button styles */
+.edit-button {
+    background-color: #4caf50; /* Bright green */
+}
+
+.edit-button:hover {
+    background-color: #45a049;
+}
+
+.delete-button {
+    background-color: #f44336; /* Bright red */
+}
+
+.delete-button:hover {
+    background-color: #e53935;
+}
+
+.view-button {
+    background-color: #007bff; /* Bright blue */
+}
+
+.view-button:hover {
+    background-color: #0056b3;
+}
+
+.close-submission-button {
+    background-color: #ffa500; /* Vibrant orange */
+}
+
+.close-submission-button:hover {
+    background-color: #ff8c00;
+}
+
+/* Add conference button */
+.add-conference-button {
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #007bff; /* Blue primary button */
+    color: white;
+    font-size: 1.1rem; /* Slightly larger for prominence */
+    font-weight: bold;
+    border: none;
+    border-radius: 8px; /* More rounded for emphasis */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Prominent shadow */
+}
+
+.add-conference-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px); /* More pronounced lift effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+/* Ensure responsiveness */
+@media (max-width: 768px) {
+    .dashboard-table-container {
+        margin: 0 auto;
+        width: 95%;
+    }
+    .dashboard-table th,
+    .dashboard-table td {
+        padding: 0.75rem;
+    }
+    .dashboard-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem; /* Adjust button size for smaller screens */
+    }
+}

@@ -1,0 +1,114 @@
+/* ReviewDetailsModal.css */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: flex-start; /* Align modal to the left */
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-container {
+    background: #ffffff;
+    width: 90%; /* Ensure it's much wider */
+    height: 100%; /* Full height */
+    border-radius: 0 12px 12px 0; /* Rounded corners on the right side */
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    overflow-y: auto; /* Enable scrolling for long content */
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.modal-header h2 {
+    font-size: 2rem;
+    color: #333;
+}
+
+.modal-header button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.3s;
+}
+
+.modal-header button:hover {
+    color: #333;
+}
+
+.modal-content {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #444;
+}
+
+.table-container {
+    width: 100%;
+    margin-top: 1rem;
+    overflow-x: auto; /* Allow horizontal scrolling for large tables */
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-container th,
+.table-container td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-container th {
+    background: #f9f9f9;
+    font-weight: bold;
+}
+
+.table-container td {
+    vertical-align: top;
+}
+
+.modal-footer {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-footer button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.modal-footer button:hover {
+    background-color: #555;
+}
+
+.modal-footer .cancel-button {
+    background-color: #bbb;
+    margin-right: 1rem;
+}
+
+.modal-footer .cancel-button:hover {
+    background-color: #999;
+}
