@@ -36,6 +36,18 @@ router.get("/", verifyToken, async (req, res) => {
     }
 });
 
+// Fetch available (open) conferences
+router.get("/available", verifyToken, async (req, res) => {
+    try {
+        // Find conferences where submissions are still open
+        const availableConferences = await Conference.find({ submissionClosed: { $ne: true } });
+        res.status(200).json(availableConferences);
+    } catch (error) {
+        console.error("Error fetching available conferences:", error);
+        res.status(500).json({ message: "Failed to fetch available conferences." });
+    }
+});
+
 // Update a conference
 router.put("/:id", verifyToken, async (req, res) => {
     try {

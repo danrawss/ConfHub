@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const conferenceRoutes = require("./routes/conferences"); 
 const authRoutes = require("./routes/auth");
+const authorRoutes = require("./routes/author");
 
 
 dotenv.config(); // Load .env variables
@@ -16,7 +17,7 @@ app.use(cors({ origin: "http://localhost:3000" }));
 // Middleware
 app.use(express.json()); // Parse JSON bodies
 
-app.use("/api/auth", authRoutes);
+
 
 // MongoDB connection
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/ConfHub";
@@ -26,7 +27,9 @@ mongoose
     .catch((err) => console.error("Error connecting to MongoDB:", err));
 
 // API routes
+app.use("/api/auth", authRoutes);
 app.use("/api/conferences", conferenceRoutes);
+app.use("/api/authors", authorRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5001;

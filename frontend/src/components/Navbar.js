@@ -1,13 +1,16 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Navbar.css"; // Keep the existing CSS file
+import "./Navbar.css"; // Existing CSS file
 
 const Navbar = ({ userRole, setUserRole }) => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        setUserRole(""); // Reset role on logout
-        navigate("/"); // Redirect to main page
+        // Clear the local storage and reset role
+        localStorage.removeItem("token");
+        localStorage.removeItem("userRole"); // Clear saved role
+        setUserRole(""); // Reset role state
+        navigate("/"); // Redirect to the main page
     };
 
     return (
@@ -17,24 +20,24 @@ const Navbar = ({ userRole, setUserRole }) => {
                 <Link to="/">ConfHub</Link>
             </div>
 
-            {/* Links Section */}
+            {/* Navigation Links */}
             <div className="navbar-links">
-                {userRole === "" ? (
-                    // Redirect Login Button to /login
-                    <button
-                        onClick={() => navigate("/login")}
-                        className="navbar-button"
-                    >
-                        Login
-                    </button>
+                {!userRole ? (
+                    // Show Login/Signup links if no user is logged in
+                    <>
+                        <Link to="/login" className="navbar-button">
+                            Login
+                        </Link>
+                        <Link to="/register" className="navbar-button">
+                            Register
+                        </Link>
+                    </>
                 ) : (
+                    // Role-specific links
                     <>
                         {userRole === "organizer" && (
                             <>
-                                <Link
-                                    to="/organizer"
-                                    className="navbar-button"
-                                >
+                                <Link to="/organizer" className="navbar-button">
                                     Dashboard
                                 </Link>
                                 <Link
@@ -55,7 +58,10 @@ const Navbar = ({ userRole, setUserRole }) => {
                                 Dashboard
                             </Link>
                         )}
-                        <button onClick={handleLogout} className="navbar-button">
+                        <button
+                            onClick={handleLogout}
+                            className="navbar-button logout-button"
+                        >
                             Logout
                         </button>
                     </>

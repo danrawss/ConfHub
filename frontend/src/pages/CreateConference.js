@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./CreateConference.css";
 
 const CreateConference = () => {
     const [formData, setFormData] = useState({
@@ -25,67 +26,68 @@ const CreateConference = () => {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            setMessage("Conference created successfully!");
+            setMessage({ text: "Conference created successfully!", type: "success" }); // Success message
             setFormData({ name: "", date: "", description: "" });
         } catch (error) {
             console.error("Error creating conference:", error);
-            setMessage("Failed to create conference.");
+            setMessage({
+                text: "Failed to create conference. Please try again.",
+                type: "error",
+            }); // Error message
         }
+
+        // Clear the message after a delay
+        setTimeout(() => {
+            setMessage("");
+        }, 3000); // Adjust the delay as needed
     };
 
     return (
-        <div style={{ padding: "2rem" }}>
+        <div className="create-conference-container">
             <h2>Create Conference</h2>
-            {message && <p>{message}</p>}
-            <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: "1rem" }}>
-                    <label>Conference Name:</label>
+            {message && (
+                <p
+                    className={`create-conference-message ${
+                        message.type === "success" ? "success" : "error"
+                    }`}
+                >
+                    {message.text}
+                </p>
+            )}
+            <form className="create-conference-form" onSubmit={handleSubmit}>
+                <div>
+                    <label htmlFor="name">Conference Name</label>
                     <input
                         type="text"
+                        id="name"
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        style={{ marginLeft: "1rem", padding: "0.5rem" }}
                     />
                 </div>
-                <div style={{ marginBottom: "1rem" }}>
-                    <label>Conference Date:</label>
+                <div>
+                    <label htmlFor="date">Conference Date</label>
                     <input
                         type="date"
+                        id="date"
                         name="date"
                         value={formData.date}
                         onChange={handleChange}
                         required
-                        style={{ marginLeft: "1rem", padding: "0.5rem" }}
                     />
                 </div>
-                <div style={{ marginBottom: "1rem" }}>
-                    <label>Conference Description:</label>
+                <div>
+                    <label htmlFor="description">Conference Description</label>
                     <textarea
+                        id="description"
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
                         required
-                        style={{
-                            marginLeft: "1rem",
-                            padding: "0.5rem",
-                            width: "100%",
-                            height: "100px",
-                        }}
                     />
                 </div>
-                <button
-                    type="submit"
-                    style={{
-                        padding: "0.5rem 1rem",
-                        backgroundColor: "#4CAF50",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                    }}
-                >
+                <button className="create-conference-submit-button" type="submit">
                     Submit
                 </button>
             </form>
