@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Login.css"; // Reusing the same CSS file for styling consistency
+import "./Login.css"; 
 
 const Register = () => {
     const [formData, setFormData] = useState({

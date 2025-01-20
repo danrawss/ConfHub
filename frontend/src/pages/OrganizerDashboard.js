@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import useRoleValidation from "../hooks/useRoleValidation";
 import EditConferenceModal from "../components/Organizer/EditConferenceModal";
 import AssignReviewersModal from "../components/Organizer/AssignReviewersModal";
-import ReviewDetailsModal from "../components/Organizer/ReviewDetailsModal"; // Import the new component
+import ReviewDetailsModal from "../components/Organizer/ReviewDetailsModal"; 
+import "./Dashboard.css"
 import "./OrganizerDashboard.css";
 
 const OrganizerDashboard = () => {
     const [conferences, setConferences] = useState([]);
-    const [selectedConference, setSelectedConference] = useState(null); // For edit modal
-    const [selectedForReviewers, setSelectedForReviewers] = useState(null); // For reviewers modal
-    const [selectedForReviewDetails, setSelectedForReviewDetails] = useState(null); // For review details modal
-
+    const [selectedConference, setSelectedConference] = useState(null); 
+    const [selectedForReviewers, setSelectedForReviewers] = useState(null); 
+    const [selectedForReviewDetails, setSelectedForReviewDetails] = useState(null); 
+    useRoleValidation("organizer");
+    
     useEffect(() => {
         const fetchConferences = async () => {
             try {
@@ -31,7 +34,7 @@ const OrganizerDashboard = () => {
     }, []);
 
     const handleEdit = (conference) => {
-        setSelectedConference(conference); // Open modal with selected conference
+        setSelectedConference(conference); 
     };
 
     const handleDelete = async (id) => {
@@ -52,7 +55,7 @@ const OrganizerDashboard = () => {
     };
 
     const handleAssignReviewers = (conference) => {
-        setSelectedForReviewers(conference); // Open modal with the selected conference
+        setSelectedForReviewers(conference); 
     };
 
     const handleCloseSubmissions = async (id) => {
@@ -60,7 +63,7 @@ const OrganizerDashboard = () => {
             try {
                 const token = localStorage.getItem("token");
                 await axios.patch(
-                    `${process.env.REACT_APP_API_BASE_URL}/api/conferences/${id}/close-submissions`, // Correct URL
+                    `${process.env.REACT_APP_API_BASE_URL}/api/conferences/${id}/close-submissions`, 
                     {},
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
@@ -83,7 +86,7 @@ const OrganizerDashboard = () => {
             const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/conferences`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            setConferences(response.data); // Refetch and update the entire list
+            setConferences(response.data); 
         } catch (error) {
             console.error("Error fetching conferences after saving:", error);
         }
@@ -198,8 +201,8 @@ const OrganizerDashboard = () => {
             )}
             {selectedForReviewers && (
                 <AssignReviewersModal
-                    conferenceId={selectedForReviewers._id} // Pass only the conference ID
-                    onClose={() => setSelectedForReviewers(null)} // Close the modal
+                    conferenceId={selectedForReviewers._id} 
+                    onClose={() => setSelectedForReviewers(null)} 
                     onSuccess={(updatedConference) => {
                         setConferences(
                             conferences.map((conf) =>
@@ -214,7 +217,7 @@ const OrganizerDashboard = () => {
             )}
             {selectedForReviewDetails && (
                 <ReviewDetailsModal
-                    details={selectedForReviewDetails} // Ensure this is properly passed
+                    details={selectedForReviewDetails} 
                     onClose={() => setSelectedForReviewDetails(null)}
                 />
             )}

@@ -33,10 +33,8 @@ const Login = ({ setUserRole }) => {
 
             const { token, user } = response.data;
 
-            // Save the token to localStorage
             localStorage.setItem("token", token);
 
-            // Set the user role and navigate to the respective dashboard
             setUserRole(user.role);
             navigate(`/${user.role}`);
         } catch (error) {

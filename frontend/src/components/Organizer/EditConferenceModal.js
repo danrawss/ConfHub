@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./EditConferenceModal.css"; // Add CSS for modal styling
+import "./EditConferenceModal.css"; 
 
 const EditConferenceModal = ({ conference, onClose, onSave }) => {
     const [formData, setFormData] = useState({
@@ -22,8 +22,8 @@ const EditConferenceModal = ({ conference, onClose, onSave }) => {
                 formData,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            onSave(response.data); // Pass the updated conference back to the parent
-            onClose(); // Close the modal
+            onSave(response.data);
+            onClose(); 
         } catch (error) {
             console.error("Error updating conference:", error);
             alert("Failed to update conference.");

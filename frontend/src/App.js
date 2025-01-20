@@ -33,9 +33,73 @@ const App = () => {
                 <Route
                     path="/"
                     element={
-                        <div style={{ padding: "2rem", textAlign: "center" }}>
-                            <h1>Welcome to ConfHub!</h1>
-                            <p>Your one-stop solution for managing and participating in conferences.</p>
+                        <div style={{ padding: "3rem 2rem", textAlign: "center" }}>
+                            <div style={{ marginBottom: "4rem" }}>
+                                <h1 style={{ fontSize: "2.5rem", color: "#333", marginBottom: "2rem" }}>
+                                    Welcome to ConfHub!
+                                </h1>
+                                <p style={{ fontSize: "1.2rem", color: "#555", maxWidth: "600px", margin: "0 auto" }}>
+                                    Your one-stop solution for managing and participating in conferences.
+                                    Submit papers, review submissions, and organize events effortlessly!
+                                </p>
+                            </div>
+
+                            <div style={{ display: "flex", justifyContent: "center", gap: "3rem", flexWrap: "wrap", marginBottom: "4rem" }}>
+                                <div
+                                    style={{
+                                        backgroundColor: "#f9f9f9",
+                                        border: "1px solid #ddd",
+                                        borderRadius: "8px",
+                                        padding: "2rem",
+                                        maxWidth: "300px",
+                                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    <h3 style={{ fontSize: "1.5rem", color: "#333", marginBottom: "1rem" }}>
+                                        Organizers
+                                    </h3>
+                                    <p style={{ color: "#666", fontSize: "1rem", marginBottom: "1rem" }}>
+                                        Manage conferences, assign reviewers, and track submissions.
+                                    </p>
+                                </div>
+                                <div
+                                    style={{
+                                        backgroundColor: "#f9f9f9",
+                                        border: "1px solid #ddd",
+                                        borderRadius: "8px",
+                                        padding: "2rem",
+                                        maxWidth: "300px",
+                                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    <h3 style={{ fontSize: "1.5rem", color: "#333", marginBottom: "1rem" }}>
+                                        Authors
+                                    </h3>
+                                    <p style={{ color: "#666", fontSize: "1rem", marginBottom: "1rem" }}>
+                                        Submit your papers and track their review progress.
+                                    </p>
+                                </div>
+                                <div
+                                    style={{
+                                        backgroundColor: "#f9f9f9",
+                                        border: "1px solid #ddd",
+                                        borderRadius: "8px",
+                                        padding: "2rem",
+                                        maxWidth: "300px",
+                                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    <h3 style={{ fontSize: "1.5rem", color: "#333", marginBottom: "1rem" }}>
+                                        Reviewers
+                                    </h3>
+                                    <p style={{ color: "#666", fontSize: "1rem", marginBottom: "1rem" }}>
+                                        Review assigned papers and provide valuable feedback.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     }
                 />

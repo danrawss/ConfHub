@@ -4,8 +4,6 @@ import "./ReviewDetailsModal.css";
 const ReviewDetailsModal = ({ details, onClose }) => {
     if (!details) return null;
 
-    if (!details) return null; // Safeguard in case details are undefined
-
     return (
         <div className="modal-overlay">
             <div className="modal-container">
@@ -16,49 +14,47 @@ const ReviewDetailsModal = ({ details, onClose }) => {
                 <div className="modal-content">
                     <h3>Conference: {details.name}</h3>
                     <p>
-                        <strong>Date:</strong>{" "}
-                        {details.date
-                            ? (() => {
-                                const [day, month, year] = details.date.split("/");
-                                const parsedDate = new Date(`${year}-${month}-${day}`);
-                                return !isNaN(parsedDate.getTime())
-                                    ? parsedDate.toLocaleDateString("en-GB", {
-                                            year: "numeric",
-                                            month: "2-digit",
-                                            day: "2-digit",
-                                        })
-                                    : "Invalid Date";
-                            })()
-                            : "No Date Provided"}
+                        <strong>Date:</strong> {details.date || "No Date Provided"}
                     </p>
                     <p>
                         <strong>Description:</strong> {details.description || "No Description"}
                     </p>
                     <p>
-                        <strong>Status:</strong>{" "}
-                        {details.submissionClosed ? "Closed" : "Open"}
+                        <strong>Status:</strong> {details.status}
                     </p>
                     <div className="table-container">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Reviewer Email</th>
-                                    <th>Submission Count</th>
-                                    <th>Pending Reviews</th>
+                                    <th>Paper Title</th>
+                                    <th>Status</th>
+                                    <th>File</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {details.reviewers && details.reviewers.length > 0 ? (
-                                    details.reviewers.map((reviewer, index) => (
+                                {details.papers && details.papers.length > 0 ? (
+                                    details.papers.map((paper, index) => (
                                         <tr key={index}>
-                                            <td>{reviewer.email}</td>
-                                            <td>{reviewer.submissionCount || 0}</td>
-                                            <td>{reviewer.pendingReviews || 0}</td>
+                                            <td>{paper.title}</td>
+                                            <td>{paper.status}</td>
+                                            <td>
+                                                {paper.status === "Accepted" ? (
+                                                    <a
+                                                        href={`${process.env.REACT_APP_API_BASE_URL}/${paper.fileUrl}`} // Correct backend API URL
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        View File
+                                                    </a>
+                                                ) : (
+                                                    "N/A"
+                                                )}
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="3">No reviewers assigned.</td>
+                                        <td colSpan="3">No papers submitted yet.</td>
                                     </tr>
                                 )}
                             </tbody>

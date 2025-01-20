@@ -1,16 +1,15 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Navbar.css"; // Existing CSS file
+import "./Navbar.css"; 
 
 const Navbar = ({ userRole, setUserRole }) => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        // Clear the local storage and reset role
         localStorage.removeItem("token");
-        localStorage.removeItem("userRole"); // Clear saved role
-        setUserRole(""); // Reset role state
-        navigate("/"); // Redirect to the main page
+        localStorage.removeItem("userRole"); 
+        setUserRole(""); 
+        navigate("/"); 
     };
 
     return (
@@ -23,7 +22,7 @@ const Navbar = ({ userRole, setUserRole }) => {
             {/* Navigation Links */}
             <div className="navbar-links">
                 {!userRole ? (
-                    // Show Login/Signup links if no user is logged in
+                    // Show Login/Register links if no user is logged in
                     <>
                         <Link to="/login" className="navbar-button">
                             Login

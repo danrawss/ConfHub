@@ -1,25 +1,25 @@
-/* ReviewDetailsModal.css */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5); 
     display: flex;
-    justify-content: flex-start; /* Align modal to the left */
-    align-items: center;
+    justify-content: center; 
+    align-items: center; 
     z-index: 1000;
 }
 
 .modal-container {
     background: #ffffff;
-    width: 90%; /* Ensure it's much wider */
-    height: 100%; /* Full height */
-    border-radius: 0 12px 12px 0; /* Rounded corners on the right side */
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    width: 90%; 
+    max-width: 600px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); 
     padding: 2rem;
-    overflow-y: auto; /* Enable scrolling for long content */
+    overflow-y: auto; 
+    max-height: 90%; 
     position: relative;
 }
 
@@ -33,20 +33,8 @@
 }
 
 .modal-header h2 {
-    font-size: 2rem;
-    color: #333;
-}
-
-.modal-header button {
-    background: none;
-    border: none;
     font-size: 1.5rem;
-    cursor: pointer;
-    color: #888;
-    transition: color 0.3s;
-}
-
-.modal-header button:hover {
+    font-weight: bold;
     color: #333;
 }
 
@@ -54,12 +42,14 @@
     font-size: 1rem;
     line-height: 1.5;
     color: #444;
+    text-align: left;
+    margin-bottom: 1.5rem;
 }
 
 .table-container {
     width: 100%;
     margin-top: 1rem;
-    overflow-x: auto; /* Allow horizontal scrolling for large tables */
+    overflow-x: auto;
 }
 
 .table-container table {
@@ -69,7 +59,7 @@
 
 .table-container th,
 .table-container td {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
@@ -79,36 +69,32 @@
     font-weight: bold;
 }
 
-.table-container td {
-    vertical-align: top;
-}
-
 .modal-footer {
-    margin-top: 2rem;
     display: flex;
     justify-content: flex-end;
+    margin-top: 1rem;
 }
 
 .modal-footer button {
-    background-color: #333;
-    color: #fff;
+    background-color: #007bff;
+    color: white;
     border: none;
     border-radius: 5px;
-    padding: 0.75rem 1.5rem;
-    cursor: pointer;
+    padding: 0.75rem 1rem;
     font-size: 1rem;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .modal-footer button:hover {
-    background-color: #555;
+    background-color: #0056b3;
 }
 
 .modal-footer .cancel-button {
-    background-color: #bbb;
-    margin-right: 1rem;
+    background-color: #dc3545;
+    margin-right: 0.5rem;
 }
 
 .modal-footer .cancel-button:hover {
-    background-color: #999;
+    background-color: #b52a3b;
 }

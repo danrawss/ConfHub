@@ -1,5 +1,6 @@
 const express = require("express");
 const Conference = require("../models/Conference");
+const Paper = require("../models/Paper");
 const verifyToken = require("../middleware/verifyToken");
 const mongoose = require("mongoose");
 const router = express.Router();
@@ -7,7 +8,7 @@ const router = express.Router();
 // Create a new conference
 router.post("/", verifyToken, async (req, res) => {
     const { name, date, description } = req.body;
-    const organizer = req.user.email; // Extract organizer email from token
+    const organizer = req.user.email; 
 
     if (!name || !date || !description) {
         return res.status(400).json({ message: "All fields are required." });
@@ -39,7 +40,6 @@ router.get("/", verifyToken, async (req, res) => {
 // Fetch available (open) conferences
 router.get("/available", verifyToken, async (req, res) => {
     try {
-        // Find conferences where submissions are still open
         const availableConferences = await Conference.find({ submissionClosed: { $ne: true } });
         res.status(200).json(availableConferences);
     } catch (error) {
@@ -84,7 +84,6 @@ router.post("/:id/reviewers", verifyToken, async (req, res) => {
             return res.status(400).json({ message: "No reviewers provided for assignment." });
         }
 
-        // Validate reviewer IDs
         if (!reviewerIds.every((id) => mongoose.Types.ObjectId.isValid(id))) {
             return res.status(400).json({ message: "Invalid reviewer IDs provided." });
         }
@@ -106,6 +105,7 @@ router.post("/:id/reviewers", verifyToken, async (req, res) => {
     }
 });
 
+// Close submissions for a conference
 router.patch("/:id/close-submissions", verifyToken, async (req, res) => {
     try {
         const { id } = req.params;
@@ -121,27 +121,31 @@ router.patch("/:id/close-submissions", verifyToken, async (req, res) => {
     }
 });
 
+// Fetch detailed review information
 router.get("/:id/review-details", verifyToken, async (req, res) => {
     try {
         const { id } = req.params;
-        const conference = await Conference.findById(id).populate("reviewers", "email");
+
+        const conference = await Conference.findById(id);
 
         if (!conference) {
             return res.status(404).json({ message: "Conference not found." });
         }
 
+        const papers = await Paper.find({ conference: id }, "title status fileUrl");
+
         res.status(200).json({
             name: conference.name,
-            date: conference.date ? conference.date.toISOString() : null, // Ensure proper date format
+            date: conference.date ? conference.date.toISOString() : null, 
             description: conference.description,
-            reviewers: conference.reviewers, // Include reviewer details
+            reviewers: conference.reviewers, 
             status: conference.submissionClosed ? "Closed" : "Open",
+            papers, 
         });
     } catch (error) {
         console.error("Error fetching review details:", error);
         res.status(500).json({ message: "Failed to fetch review details.", error });
     }
 });
-
 
 module.exports = router;

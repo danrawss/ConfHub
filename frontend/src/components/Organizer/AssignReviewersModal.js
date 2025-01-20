@@ -5,7 +5,7 @@ import "./AssignReviewersModal.css";
 const AssignReviewersModal = ({ conferenceId, onClose, onSuccess }) => {
     const [reviewers, setReviewers] = useState([]);
     const [selectedReviewers, setSelectedReviewers] = useState([]);
-    const [message, setMessage] = useState(""); // To display errors or success messages
+    const [message, setMessage] = useState(""); 
 
     useEffect(() => {
         const fetchReviewers = async () => {
@@ -50,7 +50,7 @@ const AssignReviewersModal = ({ conferenceId, onClose, onSuccess }) => {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             setMessage("Reviewers assigned successfully!");
-            onSuccess(response.data); // Notify parent component
+            onSuccess(response.data);
         } catch (error) {
             console.error("Error assigning reviewers:", error);
             setMessage("Failed to assign reviewers. Please try again.");

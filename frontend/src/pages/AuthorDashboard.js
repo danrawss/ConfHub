@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import useRoleValidation from "../hooks/useRoleValidation";
 import RegisterForConferenceModal from "../components/Author/RegisterForConferenceModal";
 import SubmitPaperModal from "../components/Author/SubmitPaperModal";
+import ViewSubmissions from "../components/Author/ViewSubmissions";
+import "./Dashboard.css"
 import "./AuthorDashboard.css";
 
 const AuthorDashboard = () => {
     const [conferences, setConferences] = useState([]);
     const [registeredConferences, setRegisteredConferences] = useState([]);
-    const [selectedConference, setSelectedConference] = useState(null); // For registration modal
-    const [selectedForSubmission, setSelectedForSubmission] = useState(null); // For submission modal
+    const [submittedPapers, setSubmittedPapers] = useState([]);
+    const [selectedConference, setSelectedConference] = useState(null); 
+    const [selectedForSubmission, setSelectedForSubmission] = useState(null); 
+    const [loading, setLoading] = useState(false);
+    useRoleValidation("author");
 
     useEffect(() => {
         const fetchConferences = async () => {
@@ -26,62 +32,10 @@ const AuthorDashboard = () => {
             }
         };
 
-        const fetchRegisteredConferences = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                const response = await axios.get(
-                    `${process.env.REACT_APP_API_BASE_URL}/api/authors/registered-conferences`, // Correct endpoint
-                    {
-                        headers: { Authorization: `Bearer ${token}` },
-                    }
-                );
-                setRegisteredConferences(response.data);
-            } catch (error) {
-                console.error("Error fetching registered conferences:", error);
-            }
-        };
-        
-
         fetchConferences();
         fetchRegisteredConferences();
+        fetchSubmittedPapers();
     }, []);
-
-    const handleRegister = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            await axios.post(
-                `${process.env.REACT_APP_API_BASE_URL}/api/authors/${selectedConference._id}/register`,
-                {},
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-            alert("Successfully registered for the conference!");
-            setSelectedConference(null);
-            fetchRegisteredConferences(); // Refresh the registered conferences list
-        } catch (error) {
-            console.error("Error registering for the conference:", error.response || error.message);
-            alert("Failed to register. Please try again.");
-        }
-    };
-
-    const handleSubmitPaper = async ({ title, file }) => {
-        try {
-            const formData = new FormData();
-            formData.append("title", title);
-            formData.append("file", file);
-
-            const token = localStorage.getItem("token");
-            await axios.post(
-                `${process.env.REACT_APP_API_BASE_URL}/api/authors/submit-paper/${selectedForSubmission._id}`,
-                formData,
-                { headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" } }
-            );
-            alert("Paper submitted successfully!");
-            setSelectedForSubmission(null);
-        } catch (error) {
-            console.error("Error submitting paper:", error);
-            alert("Failed to submit the paper. Please try again.");
-        }
-    };
 
     const fetchRegisteredConferences = async () => {
         try {
@@ -94,7 +48,96 @@ const AuthorDashboard = () => {
         } catch (error) {
             console.error("Error fetching registered conferences:", error.response || error.message);
         }
+    };
+
+    const fetchSubmittedPapers = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get(
+                `${process.env.REACT_APP_API_BASE_URL}/api/authors/papers/submissions`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            setSubmittedPapers(response.data);
+        } catch (error) {
+            console.error("Error fetching submitted papers:", error.response || error.message);
+        }
+    };
+
+    const handleRegister = async () => {
+        setLoading(true);
+        try {
+            const token = localStorage.getItem("token");
+            await axios.post(
+                `${process.env.REACT_APP_API_BASE_URL}/api/authors/${selectedConference._id}/register`,
+                {},
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            alert("Successfully registered for the conference!");
+            setSelectedConference(null);
+            await fetchRegisteredConferences(); 
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || "Failed to register. Please try again.";
+            alert(errorMessage);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSubmitPaper = async ({ title, abstract, file }) => {
+        setLoading(true);
+        try {
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("abstract", abstract); 
+            formData.append("fileUrl", file); 
+    
+            const token = localStorage.getItem("token");
+            await axios.post(
+                `${process.env.REACT_APP_API_BASE_URL}/api/authors/${selectedForSubmission._id}/papers`,
+                formData,
+                { headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" } }
+            );
+    
+            alert("Paper submitted successfully!");
+            setSelectedForSubmission(null);
+            await fetchSubmittedPapers(); 
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || "Failed to submit the paper.";
+            alert(errorMessage);
+        } finally {
+            setLoading(false);
+        }
     };    
+
+    const handleUploadRevision = async (paperId, file) => {
+        setLoading(true);
+        try {
+            const formData = new FormData();
+            formData.append("fileUrl", file);
+
+            const token = localStorage.getItem("token");
+            await axios.put(
+                `${process.env.REACT_APP_API_BASE_URL}/api/authors/papers/${paperId}/revision`,
+                formData,
+                { headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" } }
+            );
+
+            alert("Revision uploaded successfully!");
+            // Refresh the papers list to reflect the updated status
+            setSubmittedPapers((prev) =>
+                prev.map((paper) =>
+                    paper._id === paperId
+                        ? { ...paper, status: "Pending Review", feedback: "" }
+                        : paper
+                )
+            );
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || "Failed to upload the revision.";
+            alert(errorMessage);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="dashboard-container">
@@ -122,9 +165,15 @@ const AuthorDashboard = () => {
                                         <button
                                             className="dashboard-button"
                                             onClick={() => setSelectedConference(conference)}
+                                            disabled={!conference.reviewers || conference.reviewers.length < 2 || loading}
                                         >
-                                            Register
+                                            {loading ? "Loading..." : "Register"}
                                         </button>
+                                        {(!conference.reviewers || conference.reviewers.length < 2) && (
+                                            <small style={{ color: "red", marginLeft: "8px" }}>
+                                                At least 2 reviewers required
+                                            </small>
+                                        )}
                                     </td>
                                 </tr>
                             ))}
@@ -157,8 +206,9 @@ const AuthorDashboard = () => {
                                         <button
                                             className="dashboard-button"
                                             onClick={() => setSelectedForSubmission(conference)}
+                                            disabled={loading}
                                         >
-                                            Submit Paper
+                                            {loading ? "Loading..." : "Submit Paper"}
                                         </button>
                                     </td>
                                 </tr>
@@ -168,6 +218,11 @@ const AuthorDashboard = () => {
                 ) : (
                     <p>You have not registered for any conferences yet.</p>
                 )}
+            </div>
+
+            <div className="dashboard-table-container">
+                <h2>Your Submitted Papers</h2>
+                <ViewSubmissions papers={submittedPapers} onUploadRevision={handleUploadRevision} />
             </div>
 
             {selectedConference && (

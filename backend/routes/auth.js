@@ -74,6 +74,7 @@ router.post("/register", async (req, res) => {
     }
 });
 
+// Fetches all conferences created by the logged-in organizer
 router.get("/", verifyToken, async (req, res) => {
     const organizer = req.user.email;
 
@@ -86,10 +87,10 @@ router.get("/", verifyToken, async (req, res) => {
     }
 });
 
-// Fetch all reviewers
+// Fetches all users with the role of "reviewer" and returns their email addresses
 router.get("/reviewers", verifyToken, async (req, res) => {
     try {
-        const reviewers = await User.find({ role: "reviewer" }, "email"); // Fetch only emails
+        const reviewers = await User.find({ role: "reviewer" }, "email");
         res.status(200).json(reviewers);
     } catch (error) {
         console.error("Error fetching reviewers:", error);
@@ -97,5 +98,17 @@ router.get("/reviewers", verifyToken, async (req, res) => {
     }
 });
 
+// Retrieves the role of the logged-in user using their ID from the token
+router.get("/role", verifyToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id); 
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+        res.status(200).json({ role: user.role }); 
+    } catch (error) {
+        res.status(500).json({ message: "Failed to retrieve role." });
+    }
+});
 
 module.exports = router;

@@ -9,7 +9,7 @@
 
 .navbar-links {
     display: flex;
-    gap: 1rem; /* Adds more space between buttons */
+    gap: 1rem; 
 }
 
 .navbar-links .navbar-button {

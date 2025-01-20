@@ -17,29 +17,28 @@ const CreateConference = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem("token"); // Get the token from local storage
-            const organizerEmail = localStorage.getItem("email"); // Assume email is stored in local storage
+            const token = localStorage.getItem("token"); 
+            const organizerEmail = localStorage.getItem("email"); 
 
             await axios.post(
                 `${process.env.REACT_APP_API_BASE_URL}/api/conferences`,
-                { ...formData, organizer: organizerEmail }, // Include organizer email
+                { ...formData, organizer: organizerEmail }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            setMessage({ text: "Conference created successfully!", type: "success" }); // Success message
+            setMessage({ text: "Conference created successfully!", type: "success" }); 
             setFormData({ name: "", date: "", description: "" });
         } catch (error) {
             console.error("Error creating conference:", error);
             setMessage({
                 text: "Failed to create conference. Please try again.",
                 type: "error",
-            }); // Error message
+            }); 
         }
 
-        // Clear the message after a delay
         setTimeout(() => {
             setMessage("");
-        }, 3000); // Adjust the delay as needed
+        }, 3000); 
     };
 
     return (
